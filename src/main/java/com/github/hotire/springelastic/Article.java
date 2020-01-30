@@ -1,5 +1,6 @@
 package com.github.hotire.springelastic;
 
+import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -7,6 +8,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.util.List;
 
+@Getter
 @Document(indexName = "blog", type = "article")
 public class Article {
 
@@ -18,5 +20,4 @@ public class Article {
     @Field(type = FieldType.Nested, includeInParent = true)
     private List<Author> authors;
 
-    // standard getters and setters
 }
