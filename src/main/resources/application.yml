@@ -1,1 +1,6 @@
+elasticsearch:
+  clustername: hotire-cluster
+  host: localhost
+  port : 9300
+
 
