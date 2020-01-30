@@ -1,18 +1,15 @@
 package com.github.hotire.springelastic;
 
 
-import org.elasticsearch.client.Client;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.TransportAddress;
-import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.elasticsearch.client.NodeClientFactoryBean;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
-import java.net.InetAddress;
+import java.util.Objects;
 
 
 @EnableElasticsearchRepositories(basePackageClasses = ElasticsearchConfig.class)
@@ -28,19 +25,29 @@ public class ElasticsearchConfig {
     @Value("${elasticsearch.clustername}")
     private String esClusterName;
 
-    @Bean
-    public Client client() throws Exception{
-        Settings esSettings = Settings.builder()
-                                      .put("cluster.name", esClusterName)
-                                      .build();
+//    @Bean
+//    public Client client() throws Exception{
+//        Settings esSettings = Settings.builder()
+//                                      .put("cluster.name", esClusterName)
+//                                      .build();
+//        return new PreBuiltTransportClient(esSettings)
+//                .addTransportAddress(new TransportAddress(InetAddress.getByName("localhost"), esPort));
+//    }
 
-        return new PreBuiltTransportClient(esSettings)
-                .addTransportAddress(new TransportAddress(InetAddress.getByName(esHost), esPort));
+    //Embedded Elasticsearch Server
+    @Bean
+    public ElasticsearchOperations elasticsearchTemplate(NodeClientFactoryBean nodeClientFactoryBean) throws Exception {
+        return new ElasticsearchTemplate(Objects.requireNonNull(nodeClientFactoryBean.getObject()));
     }
 
     @Bean
-    public ElasticsearchOperations elasticsearchTemplate() throws Exception{
-        return new ElasticsearchTemplate(client());
+    public NodeClientFactoryBean nodeClientFactoryBean() {
+        NodeClientFactoryBean nodeClientFactoryBean = new NodeClientFactoryBean(true);
+        nodeClientFactoryBean.setPathData("target/elasticsearchTestData");
+        nodeClientFactoryBean.setPathHome("src/test/resources/test-home-dir");
+        nodeClientFactoryBean.setEnableHttp(false);
+        nodeClientFactoryBean.setClusterName(esClusterName);
+        return nodeClientFactoryBean;
     }
 
 }
