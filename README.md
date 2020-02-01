@@ -1,6 +1,6 @@
 # Spring ElasticSearch
 
-![elastic](/doc/logo.png)
+![elastic](doc/logo.png)
 
 ### Elastic 특징 
 
