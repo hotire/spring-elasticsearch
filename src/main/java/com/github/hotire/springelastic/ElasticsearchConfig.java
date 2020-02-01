@@ -16,30 +16,16 @@ import java.util.Objects;
 @Configuration
 public class ElasticsearchConfig {
 
-    @Value("${elasticsearch.host}")
-    private String esHost;
-
-    @Value("${elasticsearch.port}")
-    private int esPort;
-
     @Value("${elasticsearch.clustername}")
     private String esClusterName;
 
-//    @Bean
-//    public Client client() throws Exception{
-//        Settings esSettings = Settings.builder()
-//                                      .put("cluster.name", esClusterName)
-//                                      .build();
-//        return new PreBuiltTransportClient(esSettings)
-//                .addTransportAddress(new TransportAddress(InetAddress.getByName("localhost"), esPort));
-//    }
 
-    //Embedded Elasticsearch Server
     @Bean
     public ElasticsearchOperations elasticsearchTemplate(NodeClientFactoryBean nodeClientFactoryBean) throws Exception {
         return new ElasticsearchTemplate(Objects.requireNonNull(nodeClientFactoryBean.getObject()));
     }
 
+    //Embedded Elasticsearch Server
     @Bean
     public NodeClientFactoryBean nodeClientFactoryBean() {
         NodeClientFactoryBean nodeClientFactoryBean = new NodeClientFactoryBean(true);

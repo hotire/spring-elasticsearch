@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+
 
 @SpringBootTest
 public class ArticleRepositoryTest {
@@ -14,10 +16,16 @@ public class ArticleRepositoryTest {
 
     @Test
     public void save() {
-        Article article = new Article("hello");
-        Article saved = articleRepository.save(article);
-        System.out.println(saved.getId());
-        System.out.println(saved.getTitle());
+        // given
+        final String title = "hello";
+        final Article article = new Article(title);
+
+        // when
+        final Article saved = articleRepository.save(article);
+
+        // then
+        assertThat(saved.getId()).isNotNull();
+        assertThat(saved.getTitle()).isEqualTo(title);
     }
 
 
