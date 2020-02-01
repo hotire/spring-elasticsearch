@@ -19,7 +19,6 @@ public class ElasticsearchConfig {
     @Value("${elasticsearch.clustername}")
     private String esClusterName;
 
-
     @Bean
     public ElasticsearchOperations elasticsearchTemplate(NodeClientFactoryBean nodeClientFactoryBean) throws Exception {
         return new ElasticsearchTemplate(Objects.requireNonNull(nodeClientFactoryBean.getObject()));
@@ -35,5 +34,4 @@ public class ElasticsearchConfig {
         nodeClientFactoryBean.setClusterName(esClusterName);
         return nodeClientFactoryBean;
     }
-
 }
