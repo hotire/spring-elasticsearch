@@ -13,7 +13,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 
 @SpringBootTest
-public class ArticleRepositoryTest {
+class ArticleRepositoryTest {
 
     @Autowired
     private ArticleRepository articleRepository;
@@ -22,7 +22,7 @@ public class ArticleRepositoryTest {
     private ElasticsearchTemplate esTemplate;
 
     @BeforeEach
-    public void config() {
+    void config() {
         esTemplate.deleteIndex(Article.class);
         esTemplate.createIndex(Article.class);
         esTemplate.putMapping(Article.class);
@@ -32,7 +32,7 @@ public class ArticleRepositoryTest {
     }
 
     @Test
-    public void save() {
+    void save() {
         // given
         final String title = "hello";
         final Article article = new Article(title);
@@ -47,7 +47,7 @@ public class ArticleRepositoryTest {
 
 
     @Test
-    public void find() {
+    void find() {
         // given
         final String title = "test";
 
