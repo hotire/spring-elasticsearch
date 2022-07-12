@@ -21,3 +21,13 @@ SQL	| Query DSL
 스키마를 미리 정의하지 않아도 JSON 문서를 넘겨주면 자동으로 인덱싱한다.
 
 
+# Elastic 
+
+
+### Elastic Glossary
+
+- https://www.elastic.co/guide/en/elastic-stack-glossary/current/terms.html
+
+### References
+- https://www.elastic.co/guide/index.html
+- https://esbook.kimjmin.net/
