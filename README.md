@@ -27,7 +27,7 @@ SQL	| Query DSL
 
 - https://www.elastic.co/guide/en/elastic-stack-glossary/current/terms.html
 
-## algorithm
+## Algorithm
 
 ### TF-IDF
 
