@@ -1,4 +1,4 @@
-package com.github.hotire.springelastic;
+package com.github.hotire.springelastic.ex;
 
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 

@@ -1,4 +1,4 @@
-package com.github.hotire.springelastic;
+package com.github.hotire.springelastic.ex;
 
 
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +11,8 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
+import com.github.hotire.springelastic.ex.Article;
+import com.github.hotire.springelastic.ex.ArticleRepository;
 
 @SpringBootTest
 class ArticleRepositoryTest {
