@@ -55,3 +55,10 @@ Document 클래스는 개별 필드의 집합이다.
 ### Term
 
 분석기에 의해 만들어진 텍스트로 표현된 단어. 검색의 기본 단위
+
+같은 byte(text)로 이루어져 있어도 field가 다르면 서로 다른 term으로 간주함
+
+
+### Summary
+Field는 Term의 집합, Document는 Field의 집합, 그리고 Index는 Document의 집합
+정리하자면, Lucene은 Term < Field < Document < Index와 같은 각 단위의 집합 구조를 가짐
