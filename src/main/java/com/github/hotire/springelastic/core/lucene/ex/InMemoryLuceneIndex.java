@@ -1,32 +1,24 @@
 package com.github.hotire.springelastic.core.lucene.ex;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.SortedDocValuesField;
 import org.apache.lucene.document.TextField;
-import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.Term;
+import org.apache.lucene.index.*;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.Sort;
-import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.BytesRef;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class InMemoryLuceneIndex {
-    private Directory memoryIndex;
-    private Analyzer analyzer;
+    private final Directory memoryIndex;
+    private final Analyzer analyzer;
 
     public InMemoryLuceneIndex(Directory memoryIndex, Analyzer analyzer) {
         super();
@@ -34,19 +26,18 @@ public class InMemoryLuceneIndex {
         this.analyzer = analyzer;
     }
 
-    public void indexDocument(String title, String body) {
+    public void indexDocument(final String title, final String body) {
+        final IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
 
-        IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
-        try {
-            IndexWriter writter = new IndexWriter(memoryIndex, indexWriterConfig);
-            Document document = new Document();
+        try (IndexWriter writer = new IndexWriter(memoryIndex, indexWriterConfig)) {
+            final Document document = new Document();
 
             document.add(new TextField("title", title, Field.Store.YES));
             document.add(new TextField("body", body, Field.Store.YES));
             document.add(new SortedDocValuesField("title", new BytesRef(title)));
 
-            writter.addDocument(document);
-            writter.close();
+            System.out.println("add, document : " + document);
+            writer.addDocument(document);
         } catch (IOException e) {
             e.printStackTrace();
         }
