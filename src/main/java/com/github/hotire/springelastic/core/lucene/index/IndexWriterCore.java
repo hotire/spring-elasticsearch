@@ -1,9 +1,9 @@
 package com.github.hotire.springelastic.core.lucene.index;
 
-import java.io.IOException;
-
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexableField;
+
+import java.io.IOException;
 
 /**
  * @see IndexWriter
@@ -22,5 +22,11 @@ public class IndexWriterCore {
      */
     public final long commit() throws IOException {
         return 0L;
+    }
+
+    /**
+     * @see IndexWriter#flush()
+     */
+    public final void flush() throws IOException {
     }
 }
