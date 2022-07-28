@@ -29,7 +29,7 @@ public class InMemoryLuceneIndex {
     public void indexDocument(final String title, final String body) {
         final IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
 
-        try (IndexWriter writer = new IndexWriter(memoryIndex, indexWriterConfig)) {
+        try (final IndexWriter writer = new IndexWriter(memoryIndex, indexWriterConfig)) {
             final Document document = new Document();
 
             document.add(new TextField("title", title, Field.Store.YES));
@@ -43,14 +43,13 @@ public class InMemoryLuceneIndex {
         }
     }
 
-    public List<Document> searchIndex(String inField, String queryString) {
-        try {
-            Query query = new QueryParser(inField, analyzer).parse(queryString);
+    public List<Document> searchIndex(final String inField, final String queryString) {
+        try (final IndexReader indexReader = DirectoryReader.open(memoryIndex)) {
+            final Query query = new QueryParser(inField, analyzer).parse(queryString);
+            final IndexSearcher searcher = new IndexSearcher(indexReader);
+            final TopDocs topDocs = searcher.search(query, 10);
+            final List<Document> documents = new ArrayList<>();
 
-            IndexReader indexReader = DirectoryReader.open(memoryIndex);
-            IndexSearcher searcher = new IndexSearcher(indexReader);
-            TopDocs topDocs = searcher.search(query, 10);
-            List<Document> documents = new ArrayList<>();
             for (ScoreDoc scoreDoc : topDocs.scoreDocs) {
                 documents.add(searcher.doc(scoreDoc.doc));
             }
@@ -59,27 +58,24 @@ public class InMemoryLuceneIndex {
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
-        return null;
-
+        return List.of();
     }
 
-    public void deleteDocument(Term term) {
-        try {
-            IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
-            IndexWriter writter = new IndexWriter(memoryIndex, indexWriterConfig);
-            writter.deleteDocuments(term);
-            writter.close();
+    public void deleteDocument(final Term term) {
+        final IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
+        try (final IndexWriter writer = new IndexWriter(memoryIndex, indexWriterConfig)) {
+            writer.deleteDocuments(term);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public List<Document> searchIndex(Query query) {
-        try {
-            IndexReader indexReader = DirectoryReader.open(memoryIndex);
-            IndexSearcher searcher = new IndexSearcher(indexReader);
-            TopDocs topDocs = searcher.search(query, 10);
-            List<Document> documents = new ArrayList<>();
+    public List<Document> searchIndex(final Query query) {
+        try (final IndexReader indexReader = DirectoryReader.open(memoryIndex)) {
+            final IndexSearcher searcher = new IndexSearcher(indexReader);
+            final TopDocs topDocs = searcher.search(query, 10);
+            final List<Document> documents = new ArrayList<>();
+
             for (ScoreDoc scoreDoc : topDocs.scoreDocs) {
                 documents.add(searcher.doc(scoreDoc.doc));
             }
@@ -88,16 +84,15 @@ public class InMemoryLuceneIndex {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
-
+        return List.of();
     }
 
-    public List<Document> searchIndex(Query query, Sort sort) {
-        try {
-            IndexReader indexReader = DirectoryReader.open(memoryIndex);
-            IndexSearcher searcher = new IndexSearcher(indexReader);
-            TopDocs topDocs = searcher.search(query, 10, sort);
-            List<Document> documents = new ArrayList<>();
+    public List<Document> searchIndex(final Query query, final Sort sort) {
+        try (final IndexReader indexReader = DirectoryReader.open(memoryIndex)) {
+            final IndexSearcher searcher = new IndexSearcher(indexReader);
+            final TopDocs topDocs = searcher.search(query, 10, sort);
+            final List<Document> documents = new ArrayList<>();
+
             for (ScoreDoc scoreDoc : topDocs.scoreDocs) {
                 documents.add(searcher.doc(scoreDoc.doc));
             }
@@ -106,7 +101,6 @@ public class InMemoryLuceneIndex {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
-
+        return List.of();
     }
 }
