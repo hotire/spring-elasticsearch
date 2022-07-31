@@ -29,3 +29,8 @@ TF-IDF(Term Frequency - Inverse Document Frequency)는 정보 검색과 텍스�
 ### References
 - https://www.elastic.co/guide/index.html
 - https://esbook.kimjmin.net/
+
+
+### Getting Started With Spring Boot
+
+- https://www.baeldung.com/spring-data-elasticsearch-tutorial
