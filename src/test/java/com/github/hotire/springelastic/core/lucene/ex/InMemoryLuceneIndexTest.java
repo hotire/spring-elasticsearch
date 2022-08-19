@@ -22,14 +22,18 @@ class InMemoryLuceneIndexTest {
         inMemoryLuceneIndex.indexDocument("activity", "running in track");
         inMemoryLuceneIndex.indexDocument("activity", "Cars are running on road");
 
-        final Term term = new Term("body", "running");
-        final Query query = new TermQuery(term);
+        final Term bodyTerm = new Term("body", "running");
+        final Term titleTerm = new Term("title", "activity");
+        final Query bodyQuery = new TermQuery(bodyTerm);
+        final Query titleQuery = new TermQuery(titleTerm);
 
         // when
-        final List<Document> documents = inMemoryLuceneIndex.searchIndex(query);
+        final List<Document> bodyDocuments = inMemoryLuceneIndex.searchIndex(bodyQuery);
+        final List<Document> titleDocuments = inMemoryLuceneIndex.searchIndex(titleQuery);
 
         // then
-        assertThat(documents.size()).isEqualTo(2);
+        assertThat(bodyDocuments.size()).isEqualTo(2);
+        assertThat(titleDocuments.size()).isEqualTo(2);
     }
 
 }
